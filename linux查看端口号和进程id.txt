@@ -1,0 +1,42 @@
+netstat -nlp
+ps -ef|grep tomcat
+netstat -lnp|grep 8080   查看该端口的进程
+
+
+kill -9 pid
+
+
+
+
+1 netstat -nlp 查看占用端口号的服务
+2 找到该端口号的进程
+3 找到该进程id
+ 4 kill它
+
+如何查看进程的端口号？
+
+netstat -lnp | grep exf
+ tcp   0   0 0.0.0.0:9101     0.0.0.0:*      LISTEN      5791/exfilter
+
+注释：上面命令中的exfilter是进行名称.上面的9101就是监控的端口号，5791是进程的进程id。
+
+如果进程没有像exfilter一样监控一个端口，如何查看进程的id？
+
+ps aux | grep exfilter
+ root      5791  0.0  2.2  59184 11256 ?        Ss   02:11   0:00 ./exfilte(www.111cn.net)r/bin/exfilter -f default -d
+ root      5823  0.0  0.1  61220   732 pts/1    R+   02:23   0:00 grep exfilter
+
+注释：第一行，第二列的5791就是进程id。第一行的最后列出了启动时的命令和参数。
+
+端口号查找对应进程的ID，操作进程
+
+若已知端口号为15000，则对应查找命令为lsof -i | grep 15000
+  
+本机显示结果为：
+
+host    3386 trinea    4u  IPv4  16907      0t0  TCP *:15000 (LISTEN)
+  
+其中的3386 便为进程号，然后使用相应操作命令便可操纵进程，如kill
+  
+ kill -9 3386
+from:http://www.111cn.net/sys/linux/59894.htm

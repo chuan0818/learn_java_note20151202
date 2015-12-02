@@ -1,0 +1,3 @@
+关于MyEclipse以及Eclipse报错multiple problems have occurred的解决方法 (2013-12-19 10:03:29)转载▼
+解决方法：找到两者的日志文件，把日志拷贝备份一下，然后删除即可。
+具体说明：先关闭Eclipse，找到E:\eclipse\workspace\.metadata下的日志“.log”文件，先备份，然后删除，再启动Eclipse即可。

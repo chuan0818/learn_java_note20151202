@@ -1,0 +1,105 @@
+1. Window->Preferences->XML->XML Catalog->User Specified Entries窗口中,选择Add 按纽
+  第2可以不要     直接选中dtd按确认键
+2.在Add XML Catalog Entry 对话框中选择或输入以下内容:
+        Location: F:/soft/programmingSoft/Framework/Ibatis/sql-map-config-2.dtd
+        Key Type: URI
+        KEY: http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd 
+
+ 
+************************************************************************
+配置hibernate根据实体类自动建表功能  
+
+ 分类： JAVA  2012-10-10 16:42 38446人阅读 评论(1) 收藏 举报 
+
+hibernate数据库databaseschemaxml
+
+
+Hibernate支持自动建表，在开发阶段很方便，可以保证hbm与数据库表结构的自动同步。
+
+如何使用呢？很简单，只要在hibernate.cfg.xml里加上如下代码
+Xml代码<property name="hbm2ddl.auto">update</property>   
+ 
+
+update：表示自动根据model对象来更新表结构，启动hibernate时会自动检查数据库，如果缺少表，则自动建表；如果表里缺少列，则自动添加列。 
+
+还有其他的参数： 
+create：启动hibernate时，自动删除原来的表，新建所有的表，所以每次启动后的以前数据都会丢失。 
+
+create-drop：启动hibernate时，自动创建表，程序关闭时，自动把相应的表都删除。所以程序结束时，表和数据也不会再存在。  
+
+PS：数据库要预先建立好，因为hibernate只会建表，不会建库
+
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+
+ 表结构和数据总是在程序执行的时候无端的修改，折腾了好长时间，查了很长时间hibernate的数据库映射文件和接口程序，始终没有发现有什么错误，到最后才发现了它！
+           <property name="hibernate.hbm2ddl.auto" value="update" />
+解释如下：
+
+hibernate.hbm2ddl.auto Automatically validate or export schema DDL to the database when the SessionFactory is created. With create-drop, the database schema will be dropped when the SessionFactory is closed explicitly. eg. validate | update | create | create-drop
+
+其实这个参数的作用主要用于：自动创建|更新|验证数据库表结构。
+ 如果没有此方面的需求建议set value="none".
+
+其它几个参数的意思:
+
+validate               加载hibernate时，验证创建数据库表结构
+create                  每次加载hibernate，重新创建数据库表结构
+create-drop        加载hibernate时创建，退出是删除表结构
+update                 加载hibernate自动更新数据库结构
+
+如果发现数据库表丢失或新增，请检查hibernate.hbm2ddl.auto的配置 可设置 <property name="hibernate.hbm2ddl.auto" value="none" />
+
+建议在开发环境下使用，在生产环境下去掉。
+
+ 
+
+优点：
+
+1、自动创建新表
+
+2、自动创建新字段
+
+3、自动修改字段类型
+
+ 
+
+缺点：
+
+1、不会自动删除表
+
+2、不会自动删除字段
+
+3、自动创建的新字段只能是在最后。
+
+ 
+
+针对缺点的建议：定期把数据库清空（删除所有表），然后启动项目，让hibernate自动创建表结构和索引，当然一些初始化数据需要手工导入。
+*****************************************************************
+
+MyEclipse导入jquery-1.8.0.min.js等文件的时候有时候会报了一堆missing semicolon的错误。怎么解决这个报错呢？方法如下：
+
+
+
+
+1、选中报错的jquery文件例如“jquery-1.8.0.min.js”。
+
+
+2、右键选择 MyEclipse-->Exclude From Validation 。
+
+
+3、再右键选择 MyEclipse-->Run Validation 即可。
+*******************************************************************
+ Java出现No enclosing instance of type E is accessible. Must qualify the allocation with an enclosing    .
+
+分类： Java  2011-11-01 20:22 83951人阅读 评论(78) 收藏 举报 
+
+allocationjavaclass百度
+
+
+最近在看Java，在编译写书上一个例子时，由于书上的代码只有一部分，于是就自己补了一个内部类。结果编译时出现：No enclosing instance of type E is accessible. Must qualify the allocation with an enclosing instance of type E(e.g.  x.new A() where x is an instance of E). E指代我写的那个内部类。
+
+根据提示，没有可访问的内部类E的实例，必须分配一个合适的内部类E的实例（如x.new A()，x必须是E的实例。）看着这句提示，我就纳闷了，我已经用new实例化了这个类，为什么还不行呢。
+
+于是百度谷歌了一下相关资料。原来我写的内部类是动态的，也就是开头以public class开头。而主程序是public static class main。在Java中，类中的静态方法不能直接调用动态方法。只有将某个内部类修饰为静态类，然后才能够在静态类中调用该类的成员变量与成员方法。所以在不做其他变动的情况下，最简单的解决办法是将public class改为public static class.
+

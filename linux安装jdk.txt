@@ -1,0 +1,93 @@
+错误：-bash: /usr/lib/jvm/java-7-sun/bin/java: No such file or directory   
+原因：1.测试jdk版本     输入 java -version 命令，查看jdk版本，如果结果和下面的类似，配置就成功了。 
+java version "1.7.0" Java(TM) SE Runtime Environment (build 1.7.0-b147) Java HotSpot(TM)最后一步，有可能出现错误
+bash: /usr/lib/jvm/java-7-sun/bin/java: 没有那个文件或目录这里是因为缺少32位的运行库 ia32-libs ，64位系统装32位的jdk，安装这个运行库即可解决
+sudo  apt-get install ia32-libs安装完毕，原先的openjdk也不用删除，以后需要的时候还可以更改过来
+
+
+http://blog.csdn.net/snowdream86/article/details/6677450
+http://www.cnblogs.com/plinx/archive/2013/06/01/3113106.html
+
+
+第一步：下载jdk-7-linux-i586.tar.gz
+wget -c http://download.oracle.com/otn-pub/java/jdk/7/jdk-7-linux-i586.tar.gz 
+(注：如果下载不下来，建议使用迅雷下载，然后拷贝到Linux系统上。)
+
+第二步：解压安装
+创建jvm目录    mkdir jvm
+
+sudo tar zxvf jdk-7u79-linux-i586.tar.gz -C /usr/lib/jvm
+cd /usr/lib/jvm
+sudo mv jdk1.7.0_79/  java-7-sun
+
+第三步：修改环境变量
+vim ~/.bashrc
+添加：
+export JAVA_HOME=/usr/lib/jvm/java-7-sun
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
+保存退出，输入以下命令使之立即生效
+
+source ~/.bashrc
+
+第四步：配置默认JDK版本
+由于ubuntu中可能会有默认的JDK，如openjdk，所以，为了将我们安装的JDK设置为默认JDK版本，还要进行如下工作。
+执行代码:
+
+[plain] view plaincopyprint?
+01.sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-7-sun/bin/java 300  
+02.sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-7-sun/bin/javac 300  
+03.sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/java-7-sun/bin/jar 300   
+04.sudo update-alternatives --install /usr/bin/javah javah /usr/lib/jvm/java-7-sun/bin/javah 300   
+05.sudo update-alternatives --install /usr/bin/javap javap /usr/lib/jvm/java-7-sun/bin/javap 300   
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-7-sun/bin/java 300
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-7-sun/bin/javac 300
+sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/java-7-sun/bin/jar 300 
+sudo update-alternatives --install /usr/bin/javah javah /usr/lib/jvm/java-7-sun/bin/javah 300 
+sudo update-alternatives --install /usr/bin/javap javap /usr/lib/jvm/java-7-sun/bin/javap 300 
+
+
+执行代码：
+
+[plain] view plaincopyprint?
+01.sudo update-alternatives --config java  
+sudo update-alternatives --config java
+系统会列出各种JDK版本，如下所示：
+
+[plain] view plaincopyprint?
+01.snowdream@snowdream:~$ sudo update-alternatives --config java  
+02.有 3 个候选项可用于替换 java (提供 /usr/bin/java)。  
+03.  
+04.  
+05.  选择       路径                                    优先级  状态  
+06.------------------------------------------------------------  
+07.* 0            /usr/lib/jvm/java-6-openjdk/jre/bin/java   1061      自动模式  
+08.  1            /usr/lib/jvm/java-6-openjdk/jre/bin/java   1061      手动模式  
+09.  2            /usr/lib/jvm/java-6-sun/jre/bin/java       63        手动模式  
+10.  3            /usr/lib/jvm/java-7-sun/bin/java           300       手动模式  
+11.  
+12.  
+13.要维持当前值[*]请按回车键，或者键入选择的编号：3  
+14.update-alternatives: 使用 /usr/lib/jvm/java-7-sun/bin/java 来提供 /usr/bin/java (java)，于 手动模式 中。  
+snowdream@snowdream:~$ sudo update-alternatives --config java
+有 3 个候选项可用于替换 java (提供 /usr/bin/java)。
+
+
+  选择       路径                                    优先级  状态
+------------------------------------------------------------
+* 0            /usr/lib/jvm/java-6-openjdk/jre/bin/java   1061      自动模式
+  1            /usr/lib/jvm/java-6-openjdk/jre/bin/java   1061      手动模式
+  2            /usr/lib/jvm/java-6-sun/jre/bin/java       63        手动模式
+  3            /usr/lib/jvm/java-7-sun/bin/java           300       手动模式
+
+
+要维持当前值[*]请按回车键，或者键入选择的编号：3
+update-alternatives: 使用 /usr/lib/jvm/java-7-sun/bin/java 来提供 /usr/bin/java (java)，于 手动模式 中。第五步：测试
+[plain] view plaincopyprint?
+01.snowdream@snowdream:~$ java -version  
+02.java version "1.7.0"  
+03.Java(TM) SE Runtime Environment (build 1.7.0-b147)  
+04.Java HotSpot(TM) Server VM (build 21.0-b17, mixed mode)  
+
+

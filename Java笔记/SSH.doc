@@ -1,0 +1,31 @@
+	Struts把Servlet、JSP、自定义标签和信息资源(message resources)整合到一个统一的框架中
+***************************************************************
+	Spring的架构基础是基于使用JavaBean属性的Inversion of Control容器。
+	Spring提供了一个用标准Java语言编写的AOP框架，它给POJOs提供了声明式的事务管理和
+其他企业事务--如果你需要--还能实现你自己的aspects。
+******************************************************************
+	Hibernate是一个开放源代码的对象关系映射框架，它对JDBC进行了非常轻量级的对象封装，
+使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。
+***********************
+在SSH 的组合框架模式中，三者各自的作用
+
+　　Struts 是一个很好的MVC框架，主要技术是Servlet和Jsp。Struts的MVC设计模式可以使我们的逻辑变得很清晰，让我们写的程序层次分明。
+
+　　Spring 提供了管理业务对象的一致方法，并鼓励注入对接口编程而不是对类编程的良好习惯，使我们的产品在最大程度上解耦。
+
+　　Hibernate 是用来持久化数据的，提供了完全面向对象的数据库操作。Hibernate对JDBC进行了非常轻量级的封装，它使得与关系型数据库打交道变得非常轻松。
+　　
+　以下是SSH架构图：
+
+SSH架构图
+　　Struts负责Web层：
+　　ActionFormBean接收网页中表单提交的数据，然后通过Action进行处理，再Forward到对应的网页，在Struts-config.xml中定义了<action-mapping>，ActionServlet会加载进来。
+　　Spring负责业务层管理，即Service：
+　　Service为Action提供统一的调用接口，封装持久层的DAO，并集成Hibernate，Spring可对JavaBean和事物进行统一管理。
+　　Hibernate负责持久层，完成数据库的CRUD操作：
+　　Hibernate有一组hbm.xml文件和PO，是与数据库中的表相对应的，然后定义DAO，这些是与数据库打交道的类。
+　　在Struts+Spring+Hibernate系统中，对象之间的调用流程如下：
+
+　　Struts——>Spring——>Hibernate
+　　JSP——>Action——>Service——>DAO——>Hibernate
+　　

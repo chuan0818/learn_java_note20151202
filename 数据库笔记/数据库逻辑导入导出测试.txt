@@ -1,0 +1,88 @@
+-- 必须以 sys chuan0818 sysdba的身份登录  select * from dba_directories  或创建新的有读写权限的目录
+
+create or replace directory dumpdir as 'D:\app\xujihao\admin\HBDB_TEST\dpdump\backup'; --新设置的目录在系统中必须已存在，否则系统不会创建这个目录
+grant read,write on directory dumpdir to hollyv8pro;
+impdp hollyv8pro/hollyv8pro@HBDB_TES directory=dumpdir dumpfile=expfull_hb.dmp full=y logfile=chuan_test.log
+drop directory dumpdir
+select * from dba_directories ;  --使用默认的D:\app\xujihao\admin\HBDB_TEST\dpdump
+impdp hollyv8pro/hollyv8pro@HBDB_TES directory=DATA_PUMP_DIR dumpfile=expfull_hb.dmp full=y logfile=chuan_test.log
+测试成功：已删除  
+select * from tbl_sys_functions;
+-- 创建数据表空间
+create tablespace CSS_APP  
+logging  
+datafile 'D:\app\xujihao\oradata\HBDB_TEST\CSS_APP.dbf' 
+size 50m  
+autoextend on  
+next 50m maxsize 7150m  
+extent management local; 
+
+-- 创建数据表空间
+create tablespace CSS_APP_IDX  
+logging  
+datafile 'D:\app\xujihao\oradata\HBDB_TEST\CSS_APP_IDX.dbf' 
+size 50m  
+autoextend on  
+next 50m maxsize 1024m  
+extent management local;
+
+-- 创建数据表空间
+create tablespace HOLLYCRM  
+logging  
+datafile 'D:\app\xujihao\oradata\HBDB_TEST\HOLLYCRM.dbf' 
+size 50m  
+autoextend on  
+next 50m maxsize 1024m  
+extent management local;
+
+-- 创建数据表空间
+create tablespace HOLLYIPCC  
+logging  
+datafile 'D:\app\xujihao\oradata\HBDB_TEST\HOLLYIPCC.dbf' 
+size 50m  
+autoextend on  
+next 50m maxsize 1024m  
+extent management local;
+
+-- 创建数据表空间
+create tablespace HOLLYREPORT  
+logging  
+datafile 'D:\app\xujihao\oradata\HBDB_TEST\HOLLYREPORT.dbf' 
+size 50m  
+autoextend on  
+next 50m maxsize 1024m  
+extent management local;
+
+-- 用户
+-- hollyv8pro
+drop user hollyv8pro cascade;
+create user hollyv8pro identified by hollyv8pro ; 
+grant connect,resource,dba to hollyv8pro;
+-- holly_sns
+drop user holly_sns cascade;
+create user holly_sns identified by holly_sns ; 
+grant connect,resource,dba to holly_sns;
+-- hollycrm
+drop user hollycrm cascade;
+create user hollycrm identified by hollycrm ; 
+grant connect,resource,dba to hollycrm;
+-- hollyet
+drop user hollyet cascade;
+create user hollyet identified by hollyet ; 
+grant connect,resource,dba to hollyet;
+-- hollyipcc
+drop user hollyipcc cascade;
+create user hollyipcc identified by hollyipcc ; 
+grant connect,resource,dba to hollyipcc;
+-- hollyprokb
+drop user hollyprokb cascade;
+create user hollyprokb identified by hollyprokb ; 
+grant connect,resource,dba to hollyprokb;
+-- hollyreport
+drop user hollyreport cascade;
+create user hollyreport identified by hollyreport ; 
+grant connect,resource,dba to hollyreport;
+-- monitor
+drop user monitor cascade;
+create user monitor identified by monitor ; 
+grant connect,resource,dba to monitor;

@@ -1,0 +1,31 @@
+-server -Xms800m -Xmx800m -XX:PermSize=64M -XX:MaxNewSize=256m -XX:MaxPermSize=128m -Djava.awt.headless=true
+
+window下：
+环境变量用set来设置（只在应用窗口中有效）  set 变量名=变量值  （可以加引号或不加引号）
+前面不加set  相当于没有设置JAVA_OPTS这个java参数
+JAVA_OPTS = -server -Xms800m -Xmx800m -XX:PermSize=64M -XX:MaxNewSize=256m -XX:MaxPermSize=128m -Djava.awt.headless=true
+
+windows平台下：  
+注意：当用MyEclipse启动tomcat项目时，只有设置在MyEclipse中的参数才有效，设置在tomcat的catalina.bat中的JAVA_OPTS无效。并且实践得到，当用MyEclipse启动tomcat项目时，设置java选项后，也可以在tomcat的catalina.bat中的设置JAVA_OPTS，tomcat中的参数不影响MyEclipse中的java_opts.
+
+tomcat中的java_opts只有tomcat startup.sh中启动时才有效，以下就是参数设置方法：bin/catalina.bat
+rem ----- Execute The Requested Command ---------------------------------------
+rem ---- chuan AVA_OPTS参数（可以加引号也可不加引号）（rem）后面是注释-------------------------------
+
+set JAVA_OPTS=-server -Xms800m -Xmx800m -XX:PermSize=64M -XX:MaxNewSize=256m -XX:MaxPermSize=128m -Djava.awt.headless=true  
+
+set JAVA_OPTS=%JAVA_OPTS% -server -Xms800m -Xmx800m -XX:PermSize=64m -XX:MaxNewSize=256m -XX:MaxPermSize=128m -Djava.awt.headless=true  
+
+set  JAVA_OPTS=-XX:PermSize=64m -XX:MaxPermSize=128m   
+以上三个都可以  推荐使用第二个  %JAVA_OPTS%可以包含原有的参数
+echo Using CATALINA_BASE:   "%CATALINA_BASE%" 上面
+**********************************************
+********************************************
+
+linux 平台下：
+linux平台下：
+linux平台下java参数一定要加引号括起来
+JAVA_OPTS="-server -Xms600m -Xmx600m -XX:PermSize=64m -XX:MaxNewSize=256m -XX:MaxPermSize=128m -Djava.awt.headless=true "
+JAVA_OPTS="$JAVA_OPTS -Xms1200m -Xmx1200m -Xss1024K -XX:PermSize=128m -XX:MaxPermSize=256m"
+推荐使用第二个，有$JAVA_OPTS的   可以包含原有的JAVA_OPTS参数
+cygwin=false
